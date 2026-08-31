@@ -1,0 +1,216 @@
+{
+  "timestamp": "2026-08-26T13:08:13.943Z",
+  "transaction_id": "txn_phase2_001",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 50000,
+  "decision_status": "Approved",
+  "rejection_reason": ""
+},
+{
+  "timestamp": "2026-08-26T13:08:13.945Z",
+  "transaction_id": "txn_phase2_002",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 125000,
+  "decision_status": "Rejected: Exceeds Spending Limit",
+  "rejection_reason": "Transaction total (125000) exceeds buyer spending limit (100000)."
+},
+{
+  "timestamp": "2026-08-26T13:08:13.945Z",
+  "transaction_id": "txn_phase2_intermediate",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 25000,
+  "decision_status": "Approved",
+  "rejection_reason": ""
+},
+{
+  "timestamp": "2026-08-26T13:08:13.946Z",
+  "transaction_id": "txn_phase2_003",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 50000,
+  "decision_status": "Rejected: Upstream Gateway Timeout",
+  "rejection_reason": "Upstream failure caught: Razorpay upstream gateway timeout: HTTP 504 Gateway Timeout on request #3 for txn txn_phase2_003. Inventory reservation rolled back successfully."
+},
+{
+  "timestamp": "2026-08-26T13:32:38.604Z",
+  "transaction_id": "txn_rest_001",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 50000,
+  "decision_status": "Approved",
+  "rejection_reason": ""
+},
+{
+  "timestamp": "2026-08-26T13:33:37.145Z",
+  "transaction_id": "txn_rest_002",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 125000,
+  "decision_status": "Rejected: Exceeds Spending Limit",
+  "rejection_reason": "Transaction total (125000) exceeds buyer spending limit (100000)."
+},
+{
+  "timestamp": "2026-08-26T13:34:26.548Z",
+  "transaction_id": "txn_rest_intermediate",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 25000,
+  "decision_status": "Approved",
+  "rejection_reason": ""
+},
+{
+  "timestamp": "2026-08-26T13:35:22.127Z",
+  "transaction_id": "txn_rest_003",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 50000,
+  "decision_status": "Rejected: Upstream Gateway Timeout",
+  "rejection_reason": "Upstream failure caught: Razorpay upstream gateway timeout: HTTP 504 Gateway Timeout on request #3 for txn txn_rest_003. Inventory reservation rolled back successfully."
+},
+{
+  "timestamp": "2026-08-26T14:13:22.367Z",
+  "transaction_id": "txn_ui_4421",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 50000,
+  "decision_status": "Approved",
+  "rejection_reason": ""
+},
+{
+  "timestamp": "2026-08-26T14:23:27.451Z",
+  "transaction_id": "txn_6404",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 50000,
+  "decision_status": "Approved",
+  "rejection_reason": ""
+},
+{
+  "timestamp": "2026-08-26T16:41:44.189Z",
+  "transaction_id": "txn_2788",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 50000,
+  "decision_status": "Approved",
+  "rejection_reason": ""
+},
+{
+  "timestamp": "2026-08-31T10:26:27.733Z",
+  "transaction_id": "txn_2795",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 250000,
+  "decision_status": "Rejected: Exceeds Spending Limit",
+  "rejection_reason": "Transaction total (250000) exceeds buyer spending limit (100000)."
+},
+{
+  "timestamp": "2026-08-31T10:26:53.428Z",
+  "transaction_id": "txn_9171",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 125000,
+  "decision_status": "Rejected: Exceeds Spending Limit",
+  "rejection_reason": "Transaction total (125000) exceeds buyer spending limit (100000)."
+},
+{
+  "timestamp": "2026-08-31T10:27:07.322Z",
+  "transaction_id": "txn_3292",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 25000,
+  "decision_status": "Rejected: Upstream Gateway Timeout",
+  "rejection_reason": "Upstream failure caught: Razorpay upstream gateway timeout: HTTP 504 Gateway Timeout on request #3 for txn txn_3292. Inventory reservation rolled back successfully."
+},
+{
+  "timestamp": "2026-08-31T10:27:51.423Z",
+  "transaction_id": "txn_6551",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 25000,
+  "decision_status": "Approved",
+  "rejection_reason": ""
+},
+{
+  "timestamp": "2026-08-31T10:48:53.384Z",
+  "transaction_id": "txn_7967",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 475000,
+  "decision_status": "Rejected: Exceeds Spending Limit",
+  "rejection_reason": "Transaction total (475000) exceeds buyer spending limit (100000)."
+},
+{
+  "timestamp": "2026-08-31T10:49:11.781Z",
+  "transaction_id": "txn_scenarioc_5253",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 50000,
+  "decision_status": "Approved",
+  "rejection_reason": ""
+},
+{
+  "timestamp": "2026-08-31T10:49:17.306Z",
+  "transaction_id": "txn_scenariob_3052",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 125000,
+  "decision_status": "Rejected: Exceeds Spending Limit",
+  "rejection_reason": "Transaction total (125000) exceeds buyer spending limit (100000)."
+},
+{
+  "timestamp": "2026-08-31T10:49:21.348Z",
+  "transaction_id": "txn_scenarioa_2282",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 50000,
+  "decision_status": "Rejected: Upstream Gateway Timeout",
+  "rejection_reason": "Upstream failure caught: Razorpay upstream gateway timeout: HTTP 504 Gateway Timeout on request #6 for txn txn_scenarioa_2282. Inventory reservation rolled back successfully."
+},
+{
+  "timestamp": "2026-08-31T11:01:06.485Z",
+  "transaction_id": "txn_scenarioa_2749",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 50000,
+  "decision_status": "Approved",
+  "rejection_reason": ""
+},
+{
+  "timestamp": "2026-08-31T11:07:56.799Z",
+  "transaction_id": "txn_scenarioc_6144",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 50000,
+  "decision_status": "Rejected: Insufficient Inventory",
+  "rejection_reason": "Insufficient inventory stock for item item_gpu_hours. Available: 1, Requested: 2"
+},
+{
+  "timestamp": "2026-08-31T11:08:13.644Z",
+  "transaction_id": "txn_6863",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 2500000,
+  "decision_status": "Rejected: Exceeds Spending Limit",
+  "rejection_reason": "Transaction total (2500000) exceeds buyer spending limit (100000)."
+},
+{
+  "timestamp": "2026-08-31T11:09:35.268Z",
+  "transaction_id": "txn_7832",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 2500000,
+  "decision_status": "Rejected: Exceeds Spending Limit",
+  "rejection_reason": "Transaction total (2500000) exceeds buyer spending limit (100000)."
+},
+{
+  "timestamp": "2026-08-31T11:31:22.597Z",
+  "transaction_id": "txn_test_perf_01",
+  "buyer_agent_id": "agent_buyer_001",
+  "seller_agent_id": "agent_seller_002",
+  "requested_amount": 25000,
+  "decision_status": "Approved",
+  "rejection_reason": ""
+},
