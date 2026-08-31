@@ -91,8 +91,8 @@ As autonomous AI agents gain agency to execute real-world financial transactions
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
-cd <repository-directory>
+git clone https://github.com/SinghDevansh-2006/agentic-commerce-gateway.git
+cd agentic-commerce-gateway
 ```
 
 ---
