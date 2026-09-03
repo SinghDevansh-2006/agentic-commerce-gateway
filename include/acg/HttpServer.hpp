@@ -6,6 +6,7 @@
 #include "Types.hpp"
 #include <string>
 #include <memory>
+#include <optional>
 #include <unordered_map>
 #include <shared_mutex>
 
