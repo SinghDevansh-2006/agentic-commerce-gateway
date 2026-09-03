@@ -36,37 +36,26 @@ As autonomous AI agents gain agency to execute real-world financial transactions
 
 ## Architecture Overview
 
-```
-+-------------------------------------------------------------------------+
-|                        Frontend Dashboard (SPA)                         |
-|      React 18 + Vite 5 | Tailwind CSS v3 | Framer Motion v11            |
-|                   Running at: http://localhost:5173                     |
-+-------------------------------------------------------------------------+
-                                    |
-            HTTP / JSON REST API    |  CORS: Wildcard (*)
-            Auto-syncs every 2.5s   |  Live Simulation POSTs
-                                    v
-+-------------------------------------------------------------------------+
-|                      Core Policy Gateway (C++20)                        |
-|        acg_gateway (CMake 3.20+) | cpp-httplib | nlohmann/json          |
-|                   Listening at: http://127.0.0.1:8088                   |
-+-------------------------------------------------------------------------+
-         |                                |                        |
-         v                                v                        v
-+------------------+            +--------------------+   +-----------------+
-|  Policy Engine   |            | Upstream Gateway   |   |  Audit Logger   |
-|  - Spend Limits  |<---------->|  Mock Interface    |-->| - JSON payload  |
-|  - Inventory Lock|            |  - HTTP 504 Timeout|   | - audit_log.json|
-|  - Rollback Ctrl |            |    on every 3rd req|   +-----------------+
-+------------------+            +--------------------+
-         |
-         v
-+------------------------------------+
-|  In-Memory State Repository        |
-|  - std::unordered_map<ID, Agent>   |
-|  - std::unordered_map<ID, Item>    |
-|  - std::shared_mutex (RW locking)  |
-+------------------------------------+
+```mermaid
+flowchart TD
+    subgraph ClientLayer["Frontend Client Layer"]
+        FE["Frontend Dashboard<br/><i>(React 18 + Vite + Tailwind CSS)</i>"]
+    end
+
+    subgraph BackendLayer["Backend Service Layer (C++20)"]
+        GW["REST API Server<br/><i>(cpp-httplib &bull; Port 8088)</i>"]
+        PE["Policy Engine<br/><i>(Spend Limits, Overflows & Rollback)</i>"]
+        UG["Upstream Gateway Mock<br/><i>(Simulated HTTP 504 Timeouts)</i>"]
+        AL["Audit Logger<br/><i>(audit_log.json &bull; JSON Ledger)</i>"]
+        DB["In-Memory State Repository<br/><i>(std::shared_mutex &bull; Agents & Inventory)</i>"]
+    end
+
+    FE -->|"HTTP / JSON REST API<br/>(2.5s Sync & Live POSTs)"| GW
+    GW -->|"Evaluate & Process"| PE
+    GW -->|"Fetch Logs"| AL
+    PE <-->|"Settlement & Rollback"| UG
+    PE -->|"Lock & Update Stock"| DB
+    PE -->|"Log Decision"| AL
 ```
 
 ### Key Engineering Principles
