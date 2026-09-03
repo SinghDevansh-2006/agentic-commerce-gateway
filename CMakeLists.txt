@@ -36,3 +36,10 @@ add_executable(acg_gateway
     src/main.cpp
 )
 target_link_libraries(acg_gateway PRIVATE acg_core Threads::Threads)
+
+# Test Suite Executable
+add_executable(acg_tests
+    tests/test_policy_engine.cpp
+)
+target_link_libraries(acg_tests PRIVATE acg_core Threads::Threads)
+
