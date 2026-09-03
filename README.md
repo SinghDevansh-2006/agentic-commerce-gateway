@@ -147,7 +147,21 @@ Starting HTTP server on http://127.0.0.1:8088 ...
 
 ---
 
-### 3. Start the React Frontend Console
+### 3. Running Backend Unit Tests
+Execute the comprehensive C++ PolicyEngine test suite:
+```bash
+# Build and run with CMake
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j
+./build/acg_tests
+
+# Or compile and run directly:
+clang++ -std=c++20 -O3 -Iinclude src/PolicyEngine.cpp src/AuditLogger.cpp src/HttpServer.cpp tests/test_policy_engine.cpp -o acg_tests -pthread && ./acg_tests
+```
+
+---
+
+### 4. Start the React Frontend Console
 Open a new terminal window:
 ```bash
 cd frontend
@@ -156,6 +170,8 @@ npm run dev
 ```
 
 Open your browser and visit **`http://localhost:5173`**.
+
+> For deep-dive architectural specifications, relational schemas, and step-by-step mutex lifecycle diagrams, see **[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)**.
 
 ---
 
