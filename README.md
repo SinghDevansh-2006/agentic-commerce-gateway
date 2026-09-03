@@ -3,15 +3,25 @@
 > **Autonomous AI Financial Safeguards & Policy Engine**  
 > A secure, low-latency settlement coordinator and policy enforcement layer built for autonomous agent-to-agent transactions.
 
-[![C++ Standard](https://img.shields.io/badge/C%2B%2B-20-blue.svg?style=flat-square&logo=c%2B%2B)](https://en.wikipedia.org/wiki/C%2B%2B20)
-[![React](https://img.shields.io/badge/React-18.3-61dafb.svg?style=flat-square&logo=react)](https://reactjs.org/)
-[![Vite](https://img.shields.io/badge/Vite-5.4-646cff.svg?style=flat-square&logo=vite)](https://vitejs.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38b2ac.svg?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![C++20](https://img.shields.io/badge/C%2B%2B-20-00599C?style=flat-square&logo=c%2B%2B)](https://en.cppreference.com/w/cpp/20)
+[![React](https://img.shields.io/badge/React-18.3-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-Apache_2.0-green.svg?style=flat-square)](LICENSE)
 
 ---
 
-## 📌 The Problem Statement
+## Live Demo
+
+- **Frontend Console**: [https://agentic-commerce-gateway-sandy.vercel.app/](https://agentic-commerce-gateway-sandy.vercel.app/)
+- **Backend Health Check**: [https://agentic-commerce-gateway-ls2i.onrender.com/health](https://agentic-commerce-gateway-ls2i.onrender.com/health)
+
+> **Note**: The backend is hosted on a free-tier instance and may take a few seconds to spin up on the first request. Once initialized, it responds with sub-millisecond policy evaluations.
+
+---
+
+## The Problem Statement
 
 As autonomous AI agents gain agency to execute real-world financial transactions—such as renting GPU clusters, buying SaaS APIs, and procuring data feeds—giving them unmediated access to credit cards or raw payment gateways creates critical vulnerabilities:
 
@@ -24,7 +34,7 @@ As autonomous AI agents gain agency to execute real-world financial transactions
 
 ---
 
-## 🏗️ Architecture Overview
+## Architecture Overview
 
 ```
 +-------------------------------------------------------------------------+
@@ -66,7 +76,7 @@ As autonomous AI agents gain agency to execute real-world financial transactions
 
 ---
 
-## ⚡ Tech Stack
+## Tech Stack
 
 | Layer | Technologies | Role |
 | :--- | :--- | :--- |
@@ -80,7 +90,7 @@ As autonomous AI agents gain agency to execute real-world financial transactions
 
 ---
 
-## 🚀 Quickstart & Local Setup
+## Quickstart & Local Setup
 
 ### Prerequisites
 - **C++ Compiler**: Clang 13+ or GCC 11+ with C++20 support
@@ -149,7 +159,7 @@ Open your browser and visit **`http://localhost:5173`**.
 
 ---
 
-## 🧪 Interactive Testing Scenarios
+## Interactive Testing Scenarios
 
 From the frontend dashboard, you can trigger three live test scenarios against the C++ policy engine:
 
@@ -165,7 +175,7 @@ From the frontend dashboard, you can trigger three live test scenarios against t
 
 ---
 
-## 📡 REST API Reference
+## REST API Reference
 
 ### `GET /health`
 Liveness probe.
@@ -222,7 +232,7 @@ Returns the historical audit trail parsed directly using `nlohmann::json`.
 
 ---
 
-## ⚠️ Known Limitations & Future Work
+## Known Limitations & Future Work
 
 - **Database Persistence**: The data model is fully normalized in [`schema.sql`](schema.sql) (3NF), but the gateway currently operates with thread-safe in-memory maps (`std::unordered_map`). Future iterations will connect persistent PostgreSQL/SQLite storage via connection pooling.
 - **Live Upstream Gateway Hooks**: Currently utilizes `RazorpayGatewayMock.hpp` to deterministically simulate upstream success and timeout failures. Future work includes live webhook verification and Razorpay Smart Collect integration.
@@ -230,5 +240,5 @@ Returns the historical audit trail parsed directly using `nlohmann::json`.
 
 ---
 
-## 📄 License
+## License
 This project is open-source and available under the [Apache-2.0 License](LICENSE).
