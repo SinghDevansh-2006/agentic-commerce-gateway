@@ -139,9 +139,9 @@ Starting HTTP server on http://127.0.0.1:8088 ...
 ### 3. Running Backend Unit Tests
 Execute the comprehensive C++ PolicyEngine test suite:
 ```bash
-# Build and run with CMake
-cmake -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build -j
+# Build and run with CMake (gated behind BUILD_TESTS=ON)
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=ON
+cmake --build build --target acg_tests -j
 ./build/acg_tests
 
 # Or compile and run directly:

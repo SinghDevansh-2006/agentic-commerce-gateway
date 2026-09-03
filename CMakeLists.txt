@@ -37,9 +37,14 @@ add_executable(acg_gateway
 )
 target_link_libraries(acg_gateway PRIVATE acg_core Threads::Threads)
 
-# Test Suite Executable
-add_executable(acg_tests
-    tests/test_policy_engine.cpp
-)
-target_link_libraries(acg_tests PRIVATE acg_core Threads::Threads)
+# Optional Test Suite Target (gated behind BUILD_TESTS, OFF by default)
+option(BUILD_TESTS "Build ACG unit test suite" OFF)
+if (BUILD_TESTS)
+    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tests/test_policy_engine.cpp")
+        add_executable(acg_tests
+            tests/test_policy_engine.cpp
+        )
+        target_link_libraries(acg_tests PRIVATE acg_core Threads::Threads)
+    endif()
+endif()
 

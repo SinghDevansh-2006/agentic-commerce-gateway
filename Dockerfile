@@ -19,7 +19,7 @@ COPY src/ ./src/
 
 # Compile C++20 backend binary in Release mode
 RUN cmake -B build -DCMAKE_BUILD_TYPE=Release \
-    && cmake --build build --config Release -j$(nproc)
+    && cmake --build build --config Release --target acg_gateway -j$(nproc)
 
 # Stage 2: Minimal runtime image
 FROM ubuntu:22.04 AS runtime
