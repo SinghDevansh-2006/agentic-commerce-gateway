@@ -1,0 +1,28 @@
+# Git and editor files
+.git
+.gitignore
+.vscode
+.idea
+*.DS_Store
+
+# Local build artifacts and binaries
+build/
+bin/
+lib/
+*.o
+*.a
+*.dylib
+*.so
+acg_gateway
+compile_commands.json
+
+# Local runtime logs and demo data
+audit_log.json
+*.log
+
+# Frontend (deployed independently or via CDN)
+frontend/
+node_modules/
+
+# Markdown documentation
+*.md

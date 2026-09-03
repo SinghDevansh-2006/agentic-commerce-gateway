@@ -99,14 +99,20 @@ cd agentic-commerce-gateway
 
 ### 2. Build and Start the C++ Backend Gateway
 
-#### Option A: Using CMake
+#### Option A: Using Docker (Production Recommended)
+```bash
+docker build -t acg-gateway:latest .
+docker run -p 8088:8088 acg-gateway:latest
+```
+
+#### Option B: Using CMake
 ```bash
 cmake -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
 ./build/acg_gateway 8088 127.0.0.1
 ```
 
-#### Option B: Direct Compilation with Clang++
+#### Option C: Direct Compilation with Clang++
 ```bash
 clang++ -std=c++20 -O3 -Iinclude \
   src/PolicyEngine.cpp \
