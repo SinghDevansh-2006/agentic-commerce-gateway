@@ -14,10 +14,10 @@
 
 ## Live Demo
 
-- **Frontend Console**: [https://agentic-commerce-gateway-sandy.vercel.app/](https://agentic-commerce-gateway-sandy.vercel.app/)
-- **Backend Health Check**: [https://agentic-commerce-gateway-ls2i.onrender.com/health](https://agentic-commerce-gateway-ls2i.onrender.com/health)
+- **Frontend Console** *(Deployed on Vercel)*: [https://agentic-commerce-gateway-sandy.vercel.app/](https://agentic-commerce-gateway-sandy.vercel.app/)
+- **Backend Health Check** *(Deployed on Render via Dockerfile multi-stage build)*: [https://agentic-commerce-gateway-ls2i.onrender.com/health](https://agentic-commerce-gateway-ls2i.onrender.com/health)
 
-> **Note**: The backend is hosted on a free-tier instance and may take a few seconds to spin up on the first request. Once initialized, it responds with sub-millisecond policy evaluations.
+> **Note**: The backend is hosted on a free-tier instance on Render and may take a few seconds to spin up on the first request. Once initialized, it responds with sub-millisecond policy evaluations.
 
 ---
 
