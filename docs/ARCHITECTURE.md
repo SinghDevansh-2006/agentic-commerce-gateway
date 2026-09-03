@@ -269,7 +269,7 @@ The client is a React 18 single-page application governed by an internal state m
 | **Backend Online Indicator** | ✅ | | Probed via `GET /health` every 2.5s. |
 | **Upstream Payment Settlement** | | ⚠️ | Handled by C++ `RazorpayGatewayMock` (throws 504 on every 3rd request). |
 | **Registered Agents Catalog** | | ⚠️ | Hardcoded in `AgentCatalog.jsx` and initialized in `main.cpp`. |
-| **System Notifications** | | ⚠️ | Pre-seeded with 4 mock alerts, but wired to locate live feed rows on click. |
+| **System Notifications** | ✅ | | Derived dynamically from live transaction feed logs with click-to-scroll navigation. |
 | **Security Admin Profile** | | ⚠️ | Hardcoded node telemetry (`acg-core-node-01`, `< 2ms`). |
 
 ---
@@ -311,7 +311,7 @@ To ensure an accurate technical assessment, the following simplifications and ga
    - The backend `GET /logs` endpoint parses `audit_log.json` using `nlohmann::json` on the trimmed array payload with a per-record fallback. While memory-efficient for moderate scale, high-throughput production environments would stream append-only logs to an external database (e.g. PostgreSQL) rather than re-reading a flat file on every poll.
 5. **Static Client Telemetry**:
    - The Security Admin drawer in the navbar displays static metadata (`acg-core-node-01`, uptime 99.99%) rather than querying live server resource telemetry.
-   - Notifications in `Navbar.jsx` are pre-seeded client-side rather than streamed over WebSockets or Server-Sent Events (SSE).
+   - Notifications in `Navbar.jsx` are derived from the live polling feed rather than a dedicated WebSocket or Server-Sent Events (SSE) push stream.
 
 ---
 

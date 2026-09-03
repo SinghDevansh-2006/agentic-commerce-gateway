@@ -18,51 +18,122 @@ export default function Navbar({
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [copiedNodeId, setCopiedNodeId] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [readNotifIds, setReadNotifIds] = useState(() => new Set());
+  const [dismissedNotifIds, setDismissedNotifIds] = useState(() => new Set());
 
-  // Dynamic interactive notifications state
-  const [notifications, setNotifications] = useState([
-    {
-      id: 'notif-1',
-      title: 'Purchase Blocked: Over Budget',
-      description: 'AI Procurement Agent exceeded authorized limit of ₹10.00.',
-      time: '2m ago',
-      type: 'warning',
-      badge: 'Policy Blocked',
-      statusTarget: 'Limit',
-      read: false,
-    },
-    {
-      id: 'notif-2',
-      title: 'Network Timeout Recovered',
-      description: 'Mock gateway dropped request (HTTP 504). Inventory restored with zero loss.',
-      time: '8m ago',
-      type: 'recovery',
-      badge: 'Auto-Recovery',
-      statusTarget: 'Timeout',
-      read: false,
-    },
-    {
-      id: 'notif-3',
-      title: 'Micro-Transaction Settled',
-      description: '₹5.00 approved safely for 2 GPU Compute Hours.',
-      time: '14m ago',
-      type: 'success',
-      badge: 'Settled',
-      statusTarget: 'Approved',
-      read: false,
-    },
-    {
-      id: 'notif-4',
-      title: 'Policy Guardrail Enforced',
-      description: 'Zero-loss state verification passed on active ledger balance.',
-      time: '28m ago',
-      type: 'info',
-      badge: 'Core Active',
-      statusTarget: null,
-      targetSection: 'dashboard-policies',
-      read: false,
-    },
-  ]);
+  // Helper to compute relative time strings
+  const getRelativeTime = (timestamp) => {
+    if (!timestamp) return 'Just now';
+    try {
+      const diffMs = Date.now() - new Date(timestamp).getTime();
+      if (isNaN(diffMs) || diffMs < 60000) return 'Just now';
+      const mins = Math.floor(diffMs / 60000);
+      if (mins < 60) return `${mins}m ago`;
+      const hours = Math.floor(mins / 60);
+      if (hours < 24) return `${hours}h ago`;
+      return `${Math.floor(hours / 24)}d ago`;
+    } catch {
+      return 'Just now';
+    }
+  };
+
+  // Map transaction log record to structured notification
+  const getNotificationFromLog = (log, isRead = false) => {
+    const status = log.decision_status || 'Unknown';
+    const amountFormatted = `₹${(Number(log.requested_amount || 0) / 10000).toFixed(2)}`;
+    const txnId = log.transaction_id || 'Txn';
+
+    let type = 'info';
+    let badge = 'Policy';
+    let title = `Transaction ${txnId}`;
+    let description = `Transaction evaluated under ACG policy engine.`;
+
+    if (status === 'Approved') {
+      type = 'success';
+      badge = 'Settled';
+      title = 'Purchase Approved & Settled';
+      description = `${amountFormatted} settled safely for ${log.buyer_agent_id || 'buyer'}.`;
+    } else if (status.includes('Timeout') || status.includes('Gateway') || status.includes('504')) {
+      type = 'recovery';
+      badge = 'Auto-Recovery';
+      title = 'Network Timeout Recovered';
+      description = `Upstream gateway timeout caught on ${txnId}. Inventory rolled back with zero loss.`;
+    } else if (status.includes('Limit') || status.includes('Exceeds')) {
+      type = 'warning';
+      badge = 'Policy Blocked';
+      title = 'Purchase Blocked: Over Budget';
+      description = `${amountFormatted} request exceeded authorized spending limit for ${log.buyer_agent_id || 'buyer'}.`;
+    } else if (status.includes('Inventory') || status.includes('Stock')) {
+      type = 'warning';
+      badge = 'Stock Depleted';
+      title = 'Purchase Blocked: Insufficient Stock';
+      description = log.rejection_reason || 'Requested quantity exceeds available inventory stock.';
+    } else if (status.includes('Currency')) {
+      type = 'warning';
+      badge = 'Currency Mismatch';
+      title = 'Rejected: Currency Mismatch';
+      description = log.rejection_reason || 'Transaction currency does not match buyer account currency.';
+    } else if (status.includes('Self')) {
+      type = 'warning';
+      badge = 'Self-Transaction';
+      title = 'Rejected: Self-Transaction';
+      description = 'Self-transactions between identical agent IDs are prohibited.';
+    } else if (status.includes('Inactive')) {
+      type = 'warning';
+      badge = 'Inactive Agent';
+      title = 'Rejected: Agent Inactive';
+      description = 'Participant agent account is inactive or disabled.';
+    } else {
+      type = 'warning';
+      badge = 'Policy Rejected';
+      title = `Policy Blocked (${txnId})`;
+      description = log.rejection_reason || `Transaction failed policy evaluation.`;
+    }
+
+    return {
+      id: `notif-${txnId}`,
+      transactionId: txnId,
+      title,
+      description,
+      time: getRelativeTime(log.timestamp),
+      type,
+      badge,
+      read: isRead,
+    };
+  };
+
+  // Synchronize notifications dynamically from real transaction logs
+  useEffect(() => {
+    if (!logs || logs.length === 0) {
+      setNotifications([]);
+      return;
+    }
+
+    // Process most recent transactions
+    const recentLogs = logs.slice(0, 8);
+
+    setNotifications(prev => {
+      const prevReadMap = new Map();
+      prev.forEach(n => {
+        prevReadMap.set(n.id, n.read);
+      });
+
+      const updated = [];
+      for (const log of recentLogs) {
+        const notifId = `notif-${log.transaction_id}`;
+        // Skip explicitly dismissed notifications
+        if (dismissedNotifIds.has(notifId) || dismissedNotifIds.has(log.transaction_id)) {
+          continue;
+        }
+
+        const isRead = readNotifIds.has(notifId) || (prevReadMap.has(notifId) ? prevReadMap.get(notifId) : false);
+        updated.push(getNotificationFromLog(log, isRead));
+      }
+
+      return updated;
+    });
+  }, [logs, readNotifIds, dismissedNotifIds]);
 
   const searchRef = useRef(null);
   const searchInputRef = useRef(null);
@@ -201,29 +272,21 @@ export default function Navbar({
   // Notification click: (a) scroll to transaction, (b) flash row, (c) mark read
   const handleNotificationClick = (notif) => {
     // Mark as read immediately
+    setReadNotifIds(prev => new Set([...prev, notif.id, notif.transactionId]));
     setNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, read: true } : n));
 
-    let matchedTxn = null;
-    if (notif.statusTarget) {
-      if (notif.statusTarget === 'Approved') {
-        matchedTxn = logs.find(l => l.decision_status === 'Approved');
-      } else {
-        matchedTxn = logs.find(l => l.decision_status?.includes(notif.statusTarget));
-      }
-    }
-
-    if (matchedTxn && matchedTxn.transaction_id) {
+    if (notif.transactionId) {
       if (onSelectTransaction) {
-        onSelectTransaction(matchedTxn.transaction_id);
+        onSelectTransaction(notif.transactionId);
       }
-      const row = document.getElementById(`txn-${matchedTxn.transaction_id}`);
+      const row = document.getElementById(`txn-${notif.transactionId}`);
       if (row) {
         row.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } else {
         document.getElementById('dashboard-activity')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     } else {
-      const section = document.getElementById(notif.targetSection || 'dashboard-activity');
+      const section = document.getElementById('dashboard-activity');
       if (section) {
         section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -231,11 +294,25 @@ export default function Navbar({
   };
 
   // Explicit clear/dismiss separate from viewing
-  const handleDismissNotification = (id) => {
+  const handleDismissNotification = (id, transactionId) => {
+    setDismissedNotifIds(prev => {
+      const next = new Set(prev);
+      next.add(id);
+      if (transactionId) next.add(transactionId);
+      return next;
+    });
     setNotifications(prev => prev.filter(n => n.id !== id));
   };
 
   const handleMarkAllRead = () => {
+    setReadNotifIds(prev => {
+      const next = new Set(prev);
+      notifications.forEach(n => {
+        next.add(n.id);
+        if (n.transactionId) next.add(n.transactionId);
+      });
+      return next;
+    });
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
   };
 
@@ -448,7 +525,7 @@ export default function Navbar({
                               type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleDismissNotification(notif.id);
+                                handleDismissNotification(notif.id, notif.transactionId);
                               }}
                               title="Dismiss notification"
                               className="p-1 rounded-md text-spark-textMuted hover:text-spark-textMain hover:bg-white transition-colors"
@@ -469,11 +546,19 @@ export default function Navbar({
                         </p>
                       </motion.div>
                     ))
+                  ) : logs.length === 0 ? (
+                    <div className="py-8 text-center text-xs text-spark-textMuted px-4">
+                      <Bell className="w-8 h-8 mx-auto text-spark-textMuted/40 mb-2.5" />
+                      <p className="font-bold text-spark-textMain font-['Space_Grotesk']">No notifications yet</p>
+                      <p className="text-[11px] mt-1 text-spark-textMuted leading-relaxed">
+                        Run a test scenario to see live policy evaluation alerts here.
+                      </p>
+                    </div>
                   ) : (
-                    <div className="py-8 text-center text-xs text-spark-textMuted">
-                      <CheckCheck className="w-8 h-8 mx-auto text-emerald-500 mb-2 opacity-80" />
-                      <p className="font-bold text-spark-textMain">All caught up!</p>
-                      <p className="text-[11px] mt-0.5">No active alerts or unread notifications.</p>
+                    <div className="py-8 text-center text-xs text-spark-textMuted px-4">
+                      <CheckCheck className="w-8 h-8 mx-auto text-emerald-500 mb-2.5 opacity-80" />
+                      <p className="font-bold text-spark-textMain font-['Space_Grotesk']">All caught up!</p>
+                      <p className="text-[11px] mt-1 text-spark-textMuted">No active unread alerts or notifications.</p>
                     </div>
                   )}
                 </div>
